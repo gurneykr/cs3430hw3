@@ -59,12 +59,12 @@ def pwr_deriv(p):
             raise Exception('pwr_deriv: case 3: ' + str(p))
     elif isinstance(b, prod):#(3x)^2 => (2*3*x)^(2-1)
         if isinstance(d, const):
-            pwr( prod(d, prod(b.get_mult1(), b.get_mult2())), d.get_val()-1)
+            return pwr( prod(d, prod(b.get_mult1(), b.get_mult2())), d.get_val()-1)
         else:
             raise Exception('pwr_deriv: case 4: ' + str(p))
     elif isinstance(b, quot): #((x+1)/(x-5))^3
         if isinstance(d, const):# 3((x+1)/(x-5))^2 * deriv()/()
-            prod(pwr(prod(d, b), d.get_val()-1), deriv(b))
+            return prod(pwr(prod(d, b), d.get_val()-1), deriv(b))
         else:
             raise Exception('power_deriv: case 5: ' + str(p))
     else:
