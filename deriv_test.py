@@ -4,7 +4,7 @@ from pwr import pwr
 from prod import prod
 from plus import plus
 from quot import quot
-from maker import make_const, make_pwr, make_pwr_expr, make_plus, make_prod
+from maker import make_const, make_pwr, make_pwr_expr, make_plus, make_prod, make_quot
 from tof import tof
 from deriv import deriv
 import unittest
@@ -47,6 +47,16 @@ class Assign01UnitTests(unittest.TestCase):
         print(e7)
         drv = deriv(e7)
         print(drv)
+
+    def test_03(self):
+        print('\n *****Test03 ***********')
+        q = make_quot(make_plus(make_pwr('x', 1.0), make_const(11.0)), make_plus(
+        make_pwr('x', 1.0), make_const(-3.0)))
+        pex = make_pwr_expr(q, 3.0)
+        print('-- function expression is:\n')
+        print(pex)
+        pexdrv = deriv(pex)
+        print(pexdrv)
 
 
 if __name__ == "__main__":

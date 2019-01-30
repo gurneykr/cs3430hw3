@@ -23,6 +23,8 @@ def deriv(expr):
         return prod_deriv(expr)
     elif isinstance(expr, plus):
         return plus_deriv(expr)
+    elif isinstance(expr, quot):
+        return quot_deriv(expr)
     else:
         raise Exception('deriv:' + repr(expr))
 
@@ -60,8 +62,13 @@ def pwr_deriv(p):
             pwr( prod(d, prod(b.get_mult1(), b.get_mult2())), d.get_val()-1)
         else:
             raise Exception('pwr_deriv: case 4: ' + str(p))
+    elif isinstance(b, quot): #((x+1)/(x-5))^3
+        if isinstance(d, const):# 3((x+1)/(x-5))^2 * deriv()/()
+            prod(pwr(prod(d, b), d.get_val()-1), deriv(b))
+        else:
+            raise Exception('power_deriv: case 5: ' + str(p))
     else:
-        raise Exception('power_deriv: case 5: ' + str(p))
+        raise Exception('power_deriv: case 6: ' + str(p))
 
 def prod_deriv(p):
     assert isinstance(p, prod)
@@ -105,10 +112,6 @@ def prod_deriv(p):
                 return prod(deriv(m1), m2)
         else:
             raise Exception('prod_deriv: case 2:' + str(p))
-        # pwr and sum (x^3)(x+2)
-        # pwr pwr (x^3)(x^3)
-        # pwr prod (x^3)(3x)
-        # pwr quotient (x^3)*(x-1)/(x+8)
     elif isinstance(m1, prod):
         if isinstance(m2, const):#(3x)*4
             if isinstance(deriv(m2), const):
@@ -117,11 +120,7 @@ def prod_deriv(p):
                 return prod(deriv(m1), m2)
         else:
             return prod(m1, deriv(m2))
-    #prod  sum (3x)(x+1)
-    #prod pwr (4x)(x^3)
-    #prod prod(4x)(3x)
-    #prod quotient (4x)*(x-1)/(x+8)
-    elif isinstance(m1, quot):# f/g = (gf'-fg')/g^2 quotient rule
+    elif isinstance(m1, quot):
         #(m2m1' - m1m2')/m2^2
         return quot( plus(prod(m2, deriv(m1)), prod(const(-1.0),prod(m1, deriv(m2)))),  pwr(m2, const(2.0)))
 
@@ -131,3 +130,21 @@ def prod_deriv(p):
     #quotient and quotient (x-1)/(x+8) * (x-1)/(x+6)
     else:
        raise Exception('prod_deriv: case 4:' + str(p))
+
+def quot_deriv(p):# f/g = (gf'-fg')/g^2 quotient rule
+    assert isinstance(p, quot)
+    f = p.get_num()
+    g = p.get_denom()
+    if isinstance(f, const):
+        return const(0)
+    if isinstance(g, const):
+        return const(0)
+    else:
+        return quot(plus(prod(g, deriv(f)), prod(const(-1),prod(f, deriv(g)))), pwr(g, const(2.0)))
+    # elif isinstance(f, plus):
+    #     pass
+    # elif isinstance(f, pwr):
+    #     pass
+    # elif isinstance(f, prod):
+    #     pass
+    # elif isinstance(f, quot):
