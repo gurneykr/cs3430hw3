@@ -12,6 +12,7 @@ from const import const
 from pwr import pwr
 from prod import prod
 from plus import plus
+from quot import quot
 import math
 
 def tof(expr):
@@ -23,6 +24,8 @@ def tof(expr):
         return prod_tof(expr)
     elif isinstance(expr, plus):
         return plus_tof(expr)
+    elif isinstance(expr, quot):
+        return quot_tof(expr)
     else:
         raise Exception('tof: ' + str(expr))
 
@@ -257,3 +260,14 @@ def plus_tof(expr):
             def f(x):
                 return plus_tof(elt1)(x) + plus_tof(elt2)(x)
             return f
+def quot_tof(expr):
+    assert isinstance(expr, quot)
+    num = expr.get_num()
+    denom = expr.get_denom()
+
+    def f(x):
+        if tof(denom)(x) == 0:
+            raise Exception("Can't divide by 0")
+        else:
+            return tof(num)(x) / tof(denom)(x)
+    return f
