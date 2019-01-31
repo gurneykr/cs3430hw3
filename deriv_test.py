@@ -30,9 +30,23 @@ class Assign01UnitTests(unittest.TestCase):
         print('\n Comparison with ground truth:\n')
         err = 0.00001
         # for i in range(10):
-        print(e6f(0), gt(0))
+        value = e6f(0)
+        print(value, gt(0))
         assert abs(e6f(0) - gt(0)) <= err
         print('Test 01:pass')
+        #(x+1)(3x^2+5) + (x^3+5x+2)
+
+    #def test_04(self):
+        #e1 = plus(make_pwr('x', 1.0), make_const(1.0))
+        #e2 = plus(prod(make_const(3.0), make_pwr('x', 2.0)), make_const(5.0))
+        #e3 = prod(e1, e2)
+        #
+        # e4 = plus(make_pwr('x', 3.0), prod(make_const(5.0), make_pwr('x', 1.0)))
+        # e5 = plus(e4, make_const(2.0))
+        # e6 = plus(e3, e5)
+        #e6f = tof(e2)
+        #print("f(x): ",e3)
+        #print(e6f(0))
 
     # def test_02(self):
     #     print('\n***** Test 02 ***********')

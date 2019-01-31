@@ -42,9 +42,9 @@ def pwr_deriv(p):
     d = p.get_deg()
     if isinstance(b, var):
         if isinstance(d, const):
-            return prod(d , pwr(b, prod(d, const(-1))))
+            return prod(d , pwr(b, plus(d, const(-1))))
         elif isinstance(d, plus):
-            return prod(d, pwr(b, prod(d ,const(-1))))
+            return prod(d, pwr(b, plus(d ,const(-1))))
         else:
             raise Exception('pwr_deriv: case 1: ' + str(p))
     if isinstance(b, pwr):  # think this is (x^2 (^3))
@@ -54,17 +54,17 @@ def pwr_deriv(p):
             raise Exception('pwr_deriv: case 2: ' + str(p))
     elif isinstance(b, plus):  # (x+2)^3
         if isinstance(d, const):
-            return prod(d, pwr(b, d.get_val()-1))
+            return prod(d, pwr(b, plus(d.get_val(), const(-1))))
         else:
             raise Exception('pwr_deriv: case 3: ' + str(p))
     elif isinstance(b, prod):#(3x)^2 => (2*3*x)^(2-1)
         if isinstance(d, const):
-            return pwr( prod(d, prod(b.get_mult1(), b.get_mult2())), d.get_val()-1)
+            return pwr( prod(d, prod(b.get_mult1(), b.get_mult2())), plus(d.get_val(), const(-1)))
         else:
             raise Exception('pwr_deriv: case 4: ' + str(p))
     elif isinstance(b, quot): #((x+1)/(x-5))^3
         if isinstance(d, const):# 3((x+1)/(x-5))^2 * deriv()/()
-            return prod(pwr(prod(d, b), d.get_val()-1), deriv(b))
+            return prod(pwr(prod(d, b), plus(d.get_val(), const(-1))), deriv(b))
         else:
             raise Exception('power_deriv: case 5: ' + str(p))
     else:
@@ -123,11 +123,6 @@ def prod_deriv(p):
     elif isinstance(m1, quot):
         #(m2m1' - m1m2')/m2^2
         return quot( plus(prod(m2, deriv(m1)), prod(const(-1.0),prod(m1, deriv(m2)))),  pwr(m2, const(2.0)))
-
-    #quotient and sum (x-1)/(x+8) * (x+4)
-    #quotient and pwr (x-1)/(x+8) * (x^2)
-    #quotient and prod (x-1)/(x+8) * (3x)
-    #quotient and quotient (x-1)/(x+8) * (x-1)/(x+6)
     else:
        raise Exception('prod_deriv: case 4:' + str(p))
 
@@ -141,10 +136,3 @@ def quot_deriv(p):# f/g = (gf'-fg')/g^2 quotient rule
         return const(0)
     else:
         return quot(plus(prod(g, deriv(f)), prod(const(-1),prod(f, deriv(g)))), pwr(g, const(2.0)))
-    # elif isinstance(f, plus):
-    #     pass
-    # elif isinstance(f, pwr):
-    #     pass
-    # elif isinstance(f, prod):
-    #     pass
-    # elif isinstance(f, quot):
