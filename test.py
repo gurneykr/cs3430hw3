@@ -77,12 +77,13 @@ class Assign01UnitTests(unittest.TestCase):
         gt = lambda x: -42.0 * (((x + 11.0) ** 2) / ((x - 3.0) ** 4))
         err = 0.00001
         print('\n - -comparison with ground truth:\n')
-        # for i in range(10):
-        #     if i != 3.0:
-        #         print(pexdrvf(i), gt(i))
-        #         #print("gt: ",gt(0))
-        #         assert abs(pexdrvf(i) - gt(i)) <= err
-            print('Test 03:pass')
+        for i in range(10):
+            if i != 3.0:
+                print(pexdrvf(i), gt(i))
+                #print("gt: ",gt(0))
+                assert abs(pexdrvf(i) - gt(i)) <= err
+       #print("pexdrvf(0): ",pexdrvf(0),"gt(i): ", gt(0))
+        print('Test 03:pass')
 
     if __name__ == "__main__":
         unittest.main()

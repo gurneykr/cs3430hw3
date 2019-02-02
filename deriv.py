@@ -69,7 +69,7 @@ def pwr_deriv(p):
     elif isinstance(b, quot):
         if isinstance(d, const):
             #b*d * deriv(quot)^d-1
-            return prod(pwr(prod(d, b), const(d.get_val()-1)), deriv(b))
+            return prod(prod(d, pwr(b, const(d.get_val()-1))) ,deriv(b))
         else:
             raise Exception('power_deriv: case 5: ' + str(p))
     else:
@@ -151,3 +151,20 @@ def quot_deriv(p):# f/g = (gf'-fg')/g^2 quotient rule
         return const(0)
     else:
         return quot(plus(prod(g, deriv(f)), prod(const(-1),prod(f, deriv(g)))), pwr(g, const(2.0)))
+
+'''
+((x+11)/(x-3))^3=> pwr 3((x+11)/(x-3))^2
+                                        * deriv (x+11)/(x-3)
+                                                    (x-3)*deriv(x+11) - (x+11)*deriv(x-3)  / (x-3)^2
+                                                    (x-3)1 - (x+11)1 / (x-3)^2
+
+                        3((x+11)/(x-3))^2  * (x-3)1 - (x+11)1 / (x-3)^2
+
+
+                        ((3.0* ((x+11.0)/(x-3.0)))^2.0)*
+
+
+
+
+                        (((((x^1.0)+-3.0)*(1.0*(x^0.0)))+(-1*(((x^1.0)+11.0)*(1.0*(x^0.0)))))/(((x^1.0)+-3.0)^2.0)))
+'''
