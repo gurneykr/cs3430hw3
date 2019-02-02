@@ -10,6 +10,7 @@ from const import const
 from pwr import pwr
 from prod import prod
 from plus import plus
+from quot import quot
 from maker import make_const, make_pwr, make_pwr_expr
 import math
 
@@ -22,6 +23,8 @@ def deriv(expr):
         return prod_deriv(expr)
     elif isinstance(expr, plus):
         return plus_deriv(expr)
+    elif isinstance(expr, quot):
+        return quot_deriv(expr)
     else:
         raise Exception('deriv:' + repr(expr))
 
@@ -63,8 +66,14 @@ def pwr_deriv(p):
             pwr( prod(d, prod(b.get_mult1(), b.get_mult2())), d.get_val()-1)
         else:
             raise Exception('pwr_deriv: case 4: ' + str(p))
+    elif isinstance(b, quot):
+        if isinstance(d, const):
+            #b*d * deriv(quot)^d-1
+            return prod(pwr(prod(d, b), const(d.get_val()-1)), deriv(b))
+        else:
+            raise Exception('power_deriv: case 5: ' + str(p))
     else:
-        raise Exception('power_deriv: case 5: ' + str(p))
+        raise Exception('power_deriv: case 6: ' + str(p))
 
 def prod_deriv(p):
     assert isinstance(p, prod)
@@ -131,3 +140,14 @@ def prod_deriv(p):
             return prod(m1, deriv(m2))
     else:
        raise Exception('prod_deriv: case 4:' + str(p))
+
+def quot_deriv(p):# f/g = (gf'-fg')/g^2 quotient rule
+    assert isinstance(p, quot)
+    f = p.get_num()
+    g = p.get_denom()
+    if isinstance(f, const):
+        return const(0)
+    if isinstance(g, const):
+        return const(0)
+    else:
+        return quot(plus(prod(g, deriv(f)), prod(const(-1),prod(f, deriv(g)))), pwr(g, const(2.0)))
