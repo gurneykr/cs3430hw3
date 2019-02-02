@@ -13,6 +13,7 @@ class const(object):
         return self.__val__
 
     def __str__(self):
+        #message = "$"+ str(self.__val__)+ "$"
         return str(self.__val__)
 
     @staticmethod
