@@ -6,6 +6,7 @@ from plus import plus
 from pwr import pwr
 from quot import quot
 from tof import tof
+from deriv import deriv
 from derivtest import loc_xtrm_1st_drv_test
 from maker import make_prod, make_const, make_pwr, make_plus
 import math
@@ -22,22 +23,28 @@ import math
 # Use it as you see fit.
 
 def dydt_given_x_dxdt(yt, x, dxdt):
-    # your code here
-    pass
+    yt_deriv = deriv(yt)
+    yt_fn = tof(yt_deriv)(x.get_val())
+    result = yt_fn * dxdt.get_val()
+    return const(result)
 
 def oil_disk_test():
     yt = make_prod(make_const(0.02 * math.pi),
                     make_pwr('r', 2.0))
     print(yt)
-    dydt = dydt_given_x_dxdt(yt, make_const(150.0),
-                             make_const(20.0))
+    dydt = dydt_given_x_dxdt(yt, make_const(150.0), make_const(20.0))
     assert not dydt is None
     assert isinstance(dydt, const)
     print(dydt)
 
 def arm_tumor_test():
-    # your code here
-    pass
+    yt = make_prod(make_const(0.003 * math.pi),
+                   make_pwr('r', 3.0))
+    print(yt)
+    dydt = dydt_given_x_dxdt(yt, make_const(10.3), make_const(-1.75))
+    assert not dydt is None
+    assert isinstance(dydt, const)
+    print(dydt)
 
 
 def maximize_revenue(demand_expr, constraint):
@@ -91,4 +98,4 @@ def max_rev_test():
 
 
 if __name__ == "__main__":
-    max_rev_test()
+    arm_tumor_test()
