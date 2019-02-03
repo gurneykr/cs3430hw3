@@ -13,6 +13,7 @@ from prod import prod
 from plus import plus
 from tof import tof
 from deriv import deriv
+from point2d import point2d
 from maker import make_const, make_prod, make_pwr, make_plus, make_point2d
 from poly12 import find_poly_2_zeros, find_poly_1_zeros
 

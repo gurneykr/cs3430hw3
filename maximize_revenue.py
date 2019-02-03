@@ -6,17 +6,27 @@ from plus import plus
 from var import var
 from pwr import pwr
 from quot import quot
+from derivtest import loc_xtrm_1st_drv_test
+from point2d import point2d
+
 from maker import make_const, make_prod, make_plus, make_pwr
 def maximize_revenue(demand_expr, constraint):
     priceExpr = demand_expr
     revenueExpr =  mult_x(priceExpr)
     print("revenueExpr: ", revenueExpr)
+    drv_revenue = deriv(revenueExpr)
+    print("R'(x)= ", drv_revenue)
+
+    extrema = loc_xtrm_1st_drv_test(revenueExpr)
+    print("extrema: ",extrema)
+
+
 
 def mult_x(expr):#1/12x^2 - 10x + 300
 
     if isinstance(expr, plus):
         if isinstance(expr.get_elt2(), const):
-            return plus(mult_x(expr.get_elt1()), prod(expr.get_elt2(), var('x')))
+            return plus(mult_x(expr.get_elt1()), prod(expr.get_elt2(), make_pwr('x', 1.0)))
         else:
             return plus(mult_x(expr.get_elt1()), mult_x(expr.get_elt2()))
     elif isinstance(expr, pwr):

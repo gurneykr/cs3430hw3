@@ -16,6 +16,7 @@ from const import const
 from plus import plus
 from prod import prod
 from quot import quot
+from point2d import point2d
 import math
 
 def make_var(var_name):
@@ -30,9 +31,9 @@ def make_pwr_expr(expr, deg):
 def make_const(val):
     return const(val=val)
 
-# def make_point2d(xv, yv):
-#     return point2d(x=make_const(xv),
-#                    y=make_const(yv))
+def make_point2d(xv, yv):
+    return point2d(x=make_const(xv),
+                   y=make_const(yv))
 
 def make_e_expr(d):
     if isinstance(d, float):
