@@ -6,21 +6,26 @@ from plus import plus
 from var import var
 from pwr import pwr
 from quot import quot
+from tof import tof
 from derivtest import loc_xtrm_1st_drv_test
 from point2d import point2d
 
 from maker import make_const, make_prod, make_plus, make_pwr
 def maximize_revenue(demand_expr, constraint):
     priceExpr = demand_expr
+    priceExprFn = tof(priceExpr)
     revenueExpr =  mult_x(priceExpr)
-    print("revenueExpr: ", revenueExpr)
-    drv_revenue = deriv(revenueExpr)
-    print("R'(x)= ", drv_revenue)
 
     extrema = loc_xtrm_1st_drv_test(revenueExpr)
-    print("extrema: ",extrema)
 
+    for i, j in extrema:
+        if i == "max":
+            x = j.get_x().get_val()
+            if constraint(j.get_x().get_val()):
+                price = priceExprFn(j.get_x().get_val())
+                max_revenue = price * j.get_x().get_val()
 
+    return [(const(x)),(const(max_revenue)),(const(price))]
 
 def mult_x(expr):#1/12x^2 - 10x + 300
 
@@ -47,8 +52,12 @@ def test01():
     e2 = make_prod(make_const(-10.0), make_pwr('x', 1.0))
     sum1 = make_plus(e1, e2)
     demand_expr = make_plus(sum1, make_const(300.0))
-    price = maximize_revenue(demand_expr, constraint=lambda x: 0 <= x <= 60)
-    print("price: ", price)
+    num_units, rev, price = maximize_revenue(demand_expr, constraint=lambda x: 0 <= x <= 60)
+    print('x = ', num_units.get_val())
+    print("rev= ", rev.get_val())
+    print('price = ', price.get_val())
+    print("Max Revenue Test: pass")
+
 
 if __name__ == "__main__":
     test01()
