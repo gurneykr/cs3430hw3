@@ -6,14 +6,12 @@
 # A01671888
 #########################################
 
-from var import var
 from const import const
 from pwr import pwr
 from prod import prod
 from plus import plus
 from tof import tof
 from deriv import deriv
-from point2d import point2d
 from maker import make_const, make_prod, make_pwr, make_plus, make_point2d
 from poly12 import find_poly_2_zeros, find_poly_1_zeros
 
@@ -119,40 +117,26 @@ def loc_xtrm_2nd_drv_test(expr):
 
     return results
 
-def test_04():
-    f1 = make_prod(make_const(27.0), make_pwr('x', 3.0))
-    f2 = make_prod(make_const(-27.0), make_pwr('x', 2.0))
-    f3 = make_prod(make_const(9.0), make_pwr('x', 1.0))
-    f4 = make_plus(f1, f2)
-    f5 = make_plus(f4, f3)
-    f6 = make_plus(f5, make_const(-1.0))
-    drv = deriv(f6)
-    assert not drv is None
-    xtrma = loc_xtrm_2nd_drv_test(f6)
-    assert xtrma is None
-
-# def test_03():
-#     # ((((1/3)*(x^3) +-(2)*(x^2)) + (3)*(x^1)) + 1)
-#     f1 = make_prod(make_const(1.0/3.0), make_pwr('x', 3.0))
-#     f2 = make_prod(make_const(-2.0), make_pwr('x', 2.0))
-#     f3 = make_prod(make_const(3.0), make_pwr('x', 1.0))
+# def test_04():
+#     f1 = make_prod(make_const(27.0), make_pwr('x', 3.0))
+#     f2 = make_prod(make_const(-27.0), make_pwr('x', 2.0))
+#     f3 = make_prod(make_const(9.0), make_pwr('x', 1.0))
 #     f4 = make_plus(f1, f2)
 #     f5 = make_plus(f4, f3)
-#     poly = make_plus(f5, make_const(1.0))
-#    # print('f(x) = ', poly)
-#     xtrma = loc_xtrm_1st_drv_test(poly)
-#     # for i, j in xtrma:
-#     #     print(i, str(j))
-
-
-def test_01():
-    # -2x^2 + 3x + 1
-    f2 = make_prod(make_const(-2.0), make_pwr('x', 2.0))
-    f3 = make_prod(make_const(3.0), make_pwr('x', 1.0))
-    f4 = make_plus(f2, f3)
-    poly = make_plus(f4, make_const(1.0))
-    loc_xtrm_1st_drv_test(poly)
-
-if __name__ == '__main__':
-    test_04()
+#     f6 = make_plus(f5, make_const(-1.0))
+#     drv = deriv(f6)
+#     assert not drv is None
+#     xtrma = loc_xtrm_2nd_drv_test(f6)
+#     assert xtrma is None
+#
+# def test_01():
+#     # -2x^2 + 3x + 1
+#     f2 = make_prod(make_const(-2.0), make_pwr('x', 2.0))
+#     f3 = make_prod(make_const(3.0), make_pwr('x', 1.0))
+#     f4 = make_plus(f2, f3)
+#     poly = make_plus(f4, make_const(1.0))
+#     loc_xtrm_1st_drv_test(poly)
+#
+# if __name__ == '__main__':
+#     test_04()
 

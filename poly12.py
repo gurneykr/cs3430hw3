@@ -14,14 +14,6 @@ from var import var
 from tof import tof
 import math
 
-# x^2 + x^1 -4
-# plus(plus(pwr(var("x"), const(2)), pwr(var("x"), const(1)), const(-4))
-# plus
-#      plus
-#           pwr
-#               var("x")
-#                          const(2)
-
 def evaluate_expression(expr, abc):
 
     # ((((1/3)*3(x^(3-1)) +-(2)*(x^(2-1)) + (3)*(x^(1-1)) + 0)
@@ -79,14 +71,6 @@ def evaluate_expression(expr, abc):
             return abc
         else:
             evaluate_expression(pwr.get_base(), abc)
-
-    # elif isinstance(expr, var): # x
-
-
-
-    # elif isinstance(expr, const):
-    #     abc['c'] = const
-
     return abc
 
 def find_poly_1_zeros(expr):

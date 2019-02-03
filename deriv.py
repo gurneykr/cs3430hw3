@@ -11,8 +11,6 @@ from pwr import pwr
 from prod import prod
 from plus import plus
 from quot import quot
-from maker import make_const, make_pwr, make_pwr_expr
-import math
 
 def deriv(expr):
     if isinstance(expr, const):
@@ -89,8 +87,6 @@ def prod_deriv(p):
             else:
                 # get 6 * 3
                 simplifiedAlt1 = const(m1.get_val() * m2.get_deg().get_val())
-
-                # alt1 = prod(m1, m2.get_deg())
                 # get x^3-1
                 simplifiedExp = const(m2.get_deg().get_val() - 1)
                 alt2 = pwr(m2.get_base(), simplifiedExp)
@@ -113,12 +109,6 @@ def prod_deriv(p):
                 return const(0)
             else:
                 return prod(m1, deriv(m2))
-        # elif isinstance(m2, pwr):  # (1+x)*(2^3)
-        #     pass
-        # elif isinstance(m2, plus):  # (1+x)*(x+3)
-        #     pass
-        # elif isinstance(m2, prod):  # (3+x)*(2x)
-        #     pass
         else:
             raise Exception('prod_deriv: case 1:' + str(p))
     elif isinstance(m1, pwr):
@@ -151,20 +141,3 @@ def quot_deriv(p):# f/g = (gf'-fg')/g^2 quotient rule
         return const(0)
     else:
         return quot(plus(prod(g, deriv(f)), prod(const(-1),prod(f, deriv(g)))), pwr(g, const(2.0)))
-
-'''
-((x+11)/(x-3))^3=> pwr 3((x+11)/(x-3))^2
-                                        * deriv (x+11)/(x-3)
-                                                    (x-3)*deriv(x+11) - (x+11)*deriv(x-3)  / (x-3)^2
-                                                    (x-3)1 - (x+11)1 / (x-3)^2
-
-                        3((x+11)/(x-3))^2  * (x-3)1 - (x+11)1 / (x-3)^2
-
-
-                        ((3.0* ((x+11.0)/(x-3.0)))^2.0)*
-
-
-
-
-                        (((((x^1.0)+-3.0)*(1.0*(x^0.0)))+(-1*(((x^1.0)+11.0)*(1.0*(x^0.0)))))/(((x^1.0)+-3.0)^2.0)))
-'''
